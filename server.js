@@ -1909,14 +1909,13 @@ const html = `<!DOCTYPE html>
             document.querySelectorAll('.task').forEach((task, index) => {
                 const column = task.closest('.column');
                 const columnId = column ? column.dataset.column : 'unknown';
-                const columnName = column ? column.querySelector('.column-name').textContent.toLowerCase() : '';
+                const columnNameElement = column ? column.querySelector('.column-name') : null;
+                const columnName = columnNameElement ? columnNameElement.textContent.toLowerCase().trim() : '';
                 const taskText = task.querySelector('.task-text');
                 
                 if (taskText) {
-                    // Check if it's a "done" column ONLY by ID or name containing "done"
-                    const isDoneColumn = columnId === 'done' || 
-                                       columnName === 'done' || 
-                                       columnName.includes('done');
+                    // Check if it's a "done" column ONLY by exact ID or exact name match
+                    const isDoneColumn = columnId === 'done' || columnName === 'done';
                     
                     const checkmark = task.querySelector('.task-checkmark');
                     
@@ -1946,10 +1945,11 @@ const html = `<!DOCTYPE html>
             // Add CSS class-based approach as backup for columns named "done"
             // Original method was spotty, this is a more reliable fallback
             document.querySelectorAll('.column').forEach(col => {
-                const colName = col.querySelector('.column-name').textContent.toLowerCase();
+                const colNameElement = col.querySelector('.column-name');
+                const colName = colNameElement ? colNameElement.textContent.toLowerCase().trim() : '';
                 const colId = col.dataset.column;
                 
-                if (colId === 'done' || colName === 'done' || colName.includes('done')) {
+                if (colId === 'done' || colName === 'done') {
                     col.classList.add('done-column');
                 } else {
                     col.classList.remove('done-column');
