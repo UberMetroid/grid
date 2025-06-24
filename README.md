@@ -28,7 +28,7 @@ A lightweight, mobile-friendly Kanban board application for managing tasks and p
 ### 📊 Column Management
 - Add new columns for custom workflows
 - Edit column names inline
-- Remove columns with confirmation
+- Remove columns with confirmation (fixing)
 - Drag tasks between columns
 
 ### 🎨 Theme Support

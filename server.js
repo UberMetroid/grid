@@ -1235,17 +1235,26 @@ const html = `<!DOCTYPE html>
         <main>
             <div class="board">
                 <div class="column" data-column="todo">
-                    <h2 contenteditable="true" class="column-name">To Do</h2>
+                    <div class="column-header">
+                        <h2 contenteditable="true" class="column-name">To Do</h2>
+                        <button class="remove-column" onclick="openDeleteColumnModal('todo')" title="Remove column">×</button>
+                    </div>
                     <div class="tasks" id="todo"></div>
                     <button class="add-task" data-column="todo">+ Add Task</button>
                 </div>
                 <div class="column" data-column="doing">
-                    <h2 contenteditable="true" class="column-name">Doing</h2>
+                    <div class="column-header">
+                        <h2 contenteditable="true" class="column-name">Doing</h2>
+                        <button class="remove-column" onclick="openDeleteColumnModal('doing')" title="Remove column">×</button>
+                    </div>
                     <div class="tasks" id="doing"></div>
                     <button class="add-task" data-column="doing">+ Add Task</button>
                 </div>
                 <div class="column" data-column="done">
-                    <h2 contenteditable="true" class="column-name">Done</h2>
+                    <div class="column-header">
+                        <h2 contenteditable="true" class="column-name">Done</h2>
+                        <button class="remove-column" onclick="openDeleteColumnModal('done')" title="Remove column">×</button>
+                    </div>
                     <div class="tasks" id="done"></div>
                     <button class="add-task" data-column="done">+ Add Task</button>
                 </div>
@@ -2351,11 +2360,26 @@ const html = `<!DOCTYPE html>
             column.className = 'column';
             column.dataset.column = columnId;
 
-            // Create elements individually
+            // Create column header container
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'column-header';
+
+            // Create column name
             const h2 = document.createElement('h2');
             h2.className = 'column-name';
             h2.contentEditable = true;
             h2.textContent = columnName;
+
+            // Create remove column button
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-column';
+            removeBtn.innerHTML = '×';
+            removeBtn.title = 'Remove column';
+            removeBtn.onclick = () => openDeleteColumnModal(columnId);
+
+            // Append header elements
+            headerDiv.appendChild(h2);
+            headerDiv.appendChild(removeBtn);
 
             const tasksDiv = document.createElement('div');
             tasksDiv.className = 'tasks';
@@ -2367,7 +2391,7 @@ const html = `<!DOCTYPE html>
             addButton.textContent = '+ Add Task';
 
             // Append elements
-            column.appendChild(h2);
+            column.appendChild(headerDiv);
             column.appendChild(tasksDiv);
             column.appendChild(addButton);
 
@@ -2445,6 +2469,14 @@ const html = `<!DOCTYPE html>
 
         function confirmDeleteColumn() {
             if (columnToDelete) {
+                // Don't allow deleting all columns
+                const columnCount = Object.keys(boardData.boards[currentBoard].columns).length;
+                if (columnCount <= 1) {
+                    showToast('Cannot delete the last column');
+                    closeDeleteColumnModal();
+                    return;
+                }
+
                 delete boardData.boards[currentBoard].columns[columnToDelete];
                 saveTasks();
                 renderTasks();
