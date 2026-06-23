@@ -1,2 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="173.2156 128.4603 71 71" width="71px" height="71px"><g fill="none" fill-rule="nonzero" transform="matrix(1, 0, 0, 1, 172.21559143066406, 132.4602508544922)" id="object-0"><rect height="71" rx="14" stroke="#1e1917" stroke-width="2" width="71" x="1" style="fill: rgb(224, 93, 68);" y="-4"/><g fill="#000" transform="matrix(-1 0 0 -1 60 58)"><path d="m11.75 33.869h-9.895c-1.024 0-1.855.83-1.855 1.855v4.947c0 1.024.831 1.854 1.855 1.854h9.895c1.024 0 1.855-.831 1.855-1.854v-4.947c0-1.025-.831-1.855-1.855-1.855z" style="fill: rgb(255, 255, 255);"/><path d="m11.75 22.737h-9.895c-1.024 0-1.855.831-1.855 1.854v4.947c0 1.025.831 1.855 1.855 1.855h9.895c1.024 0 1.855-.83 1.855-1.855v-4.947c0-1.024-.831-1.854-1.855-1.854z" style="fill: rgb(255, 255, 255);"/><path d="m11.75 11.605h-9.895c-1.024 0-1.855.83-1.855 1.855v4.947c0 1.025.831 1.855 1.855 1.855h9.895c1.024 0 1.855-.831 1.855-1.855v-4.947c0-1.024-.831-1.855-1.855-1.855z" style="fill: rgb(255, 255, 255);"/><path d="m28.447 33.869h-9.896c-1.024 0-1.855.83-1.855 1.855v4.947c0 1.024.831 1.854 1.855 1.854h9.896c1.023 0 1.854-.831 1.854-1.854v-4.947c.002-1.025-.828-1.855-1.854-1.855z" style="fill: rgb(255, 255, 255);"/><path d="m28.447 22.737h-9.896c-1.024 0-1.855.831-1.855 1.854v4.947c0 1.025.831 1.855 1.855 1.855h9.896c1.023 0 1.854-.83 1.854-1.855v-4.947c.002-1.024-.828-1.854-1.854-1.854z" style="fill: rgb(255, 255, 255);"/><path d="m45.145 33.869h-9.895c-1.023 0-1.855.83-1.855 1.855v4.947c0 1.024.832 1.854 1.855 1.854h9.895c1.024 0 1.855-.831 1.855-1.854v-4.947c0-1.025-.831-1.855-1.855-1.855z" style="fill: rgb(255, 255, 255);"/><path d="m45.145 22.737h-9.895c-1.023 0-1.855.831-1.855 1.854v4.947c0 1.025.832 1.855 1.855 1.855h9.895c1.024 0 1.855-.83 1.855-1.855v-4.947c0-1.024-.831-1.854-1.855-1.854z" style="fill: rgb(255, 255, 255);"/><path d="m45.145 11.605h-9.895c-1.023 0-1.855.83-1.855 1.855v4.947c0 1.025.832 1.855 1.855 1.855h9.895c1.024 0 1.855-.831 1.855-1.855v-4.947c0-1.024-.831-1.855-1.855-1.855z" style="fill: rgb(255, 255, 255);"/></g></g></svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<g>
+	<circle cx="256" cy="256" r="232.7" style="opacity:0.2;fill:#e05d44;enable-background:new;"/>
+	<path style="fill:#e05d44;" d="M256,512C114.8,512,0,397.2,0,256S114.8,0,256,0s256,114.8,256,256S397.2,512,256,512z M256,46.6
+		c-115.5,0-209.5,94-209.5,209.5s94,209.5,209.5,209.5s209.5-94,209.5-209.5C465.5,140.5,371.5,46.6,256,46.6z"/>
+	<g>
+		<!-- Left Column -->
+		<rect x="150" y="150" width="60" height="212" rx="8" style="opacity:0.3;fill:#e05d44;enable-background:new;"/>
+		<rect x="155" y="160" width="50" height="40" rx="4" style="opacity:0.9;fill:#e05d44;enable-background:new;"/>
+		<rect x="155" y="210" width="50" height="60" rx="4" style="opacity:0.7;fill:#e05d44;enable-background:new;"/>
+		
+		<!-- Middle Column -->
+		<rect x="226" y="150" width="60" height="212" rx="8" style="opacity:0.3;fill:#e05d44;enable-background:new;"/>
+		<rect x="231" y="160" width="50" height="50" rx="4" style="opacity:0.8;fill:#e05d44;enable-background:new;"/>
+		<rect x="231" y="220" width="50" height="40" rx="4" style="opacity:0.9;fill:#e05d44;enable-background:new;"/>
+		
+		<!-- Right Column -->
+		<rect x="302" y="150" width="60" height="212" rx="8" style="opacity:0.3;fill:#e05d44;enable-background:new;"/>
+		<rect x="307" y="160" width="50" height="70" rx="4" style="opacity:0.7;fill:#e05d44;enable-background:new;"/>
+		<rect x="307" y="240" width="50" height="40" rx="4" style="opacity:0.8;fill:#e05d44;enable-background:new;"/>
+	</g>
+</g>
+</svg>
