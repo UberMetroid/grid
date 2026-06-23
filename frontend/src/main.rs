@@ -3,10 +3,10 @@ mod i18n;
 mod storage;
 mod types;
 
-use crate::i18n::get_translations;
 use crate::header::Header;
+use crate::i18n::get_translations;
 use crate::storage::StorageService;
-use crate::types::{BoardData, Board, Column, Language};
+use crate::types::{Board, BoardData, Column, Language};
 use gloo_net::http::Request;
 use web_sys::{DragEvent, HtmlInputElement};
 use yew::prelude::*;
@@ -30,9 +30,7 @@ pub enum Msg {
     SwitchLanguage(Language),
     ToggleTheme,
     PrintBoard,
-    
 
-    
     // Tasks management
     OpenAddTaskModal(String),
     OpenEditTaskModal(String, usize),
@@ -41,12 +39,12 @@ pub enum Msg {
     DeleteTask,
     DeleteTaskDirect(String, usize),
     CloseTaskModal,
-    
+
     // Drag & Drop
     DragStart(String, usize, DragEvent),
     DragOver(DragEvent),
     Drop(String, Option<usize>, DragEvent),
-    
+
     // Toast
     ShowToast(String, bool),
     DismissToast(usize),
@@ -63,21 +61,19 @@ pub struct App {
     pin_input: String,
     error_message: Option<String>,
     board_data: Option<BoardData>,
-    
+
     // UI states
     active_board_id: String,
-    
 
-    
     task_modal_column_id: Option<String>,
     task_modal_index: Option<usize>,
     task_modal_text: String,
     show_task_modal: bool,
-    
+
     // Drag data
     dragged_column_id: Option<String>,
     dragged_task_index: Option<usize>,
-    
+
     // Toast
     toasts: Vec<Toast>,
     next_toast_id: usize,
@@ -143,9 +139,12 @@ impl Component for App {
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::FetchConfigSuccess(json) => {
-                let pin_req = json.get("required").and_then(|v| v.as_bool()).unwrap_or(false);
+                let pin_req = json
+                    .get("required")
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false);
                 let pin_len = json.get("length").and_then(|v| v.as_u64()).unwrap_or(0) as usize;
-                
+
                 self.pin_required = pin_req;
                 self.pin_length = pin_len;
 
@@ -175,9 +174,27 @@ impl Component for App {
                         name: "Work".to_string(),
                         columns: {
                             let mut cols = indexmap::IndexMap::new();
-                            cols.insert("todo".to_string(), Column { name: "To Do".to_string(), tasks: vec![] });
-                            cols.insert("doing".to_string(), Column { name: "Doing".to_string(), tasks: vec![] });
-                            cols.insert("done".to_string(), Column { name: "Done".to_string(), tasks: vec![] });
+                            cols.insert(
+                                "todo".to_string(),
+                                Column {
+                                    name: "To Do".to_string(),
+                                    tasks: vec![],
+                                },
+                            );
+                            cols.insert(
+                                "doing".to_string(),
+                                Column {
+                                    name: "Doing".to_string(),
+                                    tasks: vec![],
+                                },
+                            );
+                            cols.insert(
+                                "done".to_string(),
+                                Column {
+                                    name: "Done".to_string(),
+                                    tasks: vec![],
+                                },
+                            );
                             cols
                         },
                     };
@@ -207,9 +224,27 @@ impl Component for App {
                         }
                     }
 
-                    new_cols.insert("todo".to_string(), Column { name: "To Do".to_string(), tasks: todo_tasks });
-                    new_cols.insert("doing".to_string(), Column { name: "Doing".to_string(), tasks: doing_tasks });
-                    new_cols.insert("done".to_string(), Column { name: "Done".to_string(), tasks: done_tasks });
+                    new_cols.insert(
+                        "todo".to_string(),
+                        Column {
+                            name: "To Do".to_string(),
+                            tasks: todo_tasks,
+                        },
+                    );
+                    new_cols.insert(
+                        "doing".to_string(),
+                        Column {
+                            name: "Doing".to_string(),
+                            tasks: doing_tasks,
+                        },
+                    );
+                    new_cols.insert(
+                        "done".to_string(),
+                        Column {
+                            name: "Done".to_string(),
+                            tasks: done_tasks,
+                        },
+                    );
 
                     board.columns = new_cols;
                 }
@@ -254,20 +289,31 @@ impl Component for App {
                 let link = ctx.link().clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     let body = serde_json::json!({ "pin": pin });
-                    match Request::post("/api/verify-pin").json(&body).unwrap().send().await {
+                    match Request::post("/api/verify-pin")
+                        .json(&body)
+                        .unwrap()
+                        .send()
+                        .await
+                    {
                         Ok(resp) if resp.status() == 200 => {
                             link.send_message(Msg::VerifyPinSuccess);
                         }
                         Ok(resp) => {
                             if let Ok(err_json) = resp.json::<serde_json::Value>().await {
-                                let msg = err_json.get("error").and_then(|v| v.as_str()).unwrap_or("Invalid PIN").to_string();
+                                let msg = err_json
+                                    .get("error")
+                                    .and_then(|v| v.as_str())
+                                    .unwrap_or("Invalid PIN")
+                                    .to_string();
                                 link.send_message(Msg::VerifyPinFailure(msg));
                             } else {
                                 link.send_message(Msg::VerifyPinFailure("Invalid PIN".to_string()));
                             }
                         }
                         Err(_) => {
-                            link.send_message(Msg::VerifyPinFailure("Connection error".to_string()));
+                            link.send_message(Msg::VerifyPinFailure(
+                                "Connection error".to_string(),
+                            ));
                         }
                     }
                 });
@@ -320,7 +366,6 @@ impl Component for App {
                 }
                 true
             }
-
 
             Msg::OpenAddTaskModal(col_id) => {
                 self.task_modal_column_id = Some(col_id);
@@ -397,7 +442,8 @@ impl Component for App {
                             if idx < col.tasks.len() {
                                 let window = web_sys::window().unwrap();
                                 let tr = get_translations(self.language);
-                                let message = format!("{}\n\n\"{}\"", tr.confirm_delete, col.tasks[idx]);
+                                let message =
+                                    format!("{}\n\n\"{}\"", tr.confirm_delete, col.tasks[idx]);
                                 if window.confirm_with_message(&message).unwrap_or(false) {
                                     col.tasks.remove(idx);
                                     self.save_tasks_backend(ctx);
@@ -417,7 +463,10 @@ impl Component for App {
                 self.dragged_column_id = Some(col_id);
                 self.dragged_task_index = Some(idx);
                 if let Some(dt) = e.data_transfer() {
-                    let _ = dt.set_data("text/plain", &format!("{}:{}", self.dragged_column_id.as_ref().unwrap(), idx));
+                    let _ = dt.set_data(
+                        "text/plain",
+                        &format!("{}:{}", self.dragged_column_id.as_ref().unwrap(), idx),
+                    );
                     dt.set_effect_allowed("move");
                 }
                 false
@@ -428,8 +477,11 @@ impl Component for App {
             }
             Msg::Drop(dest_col_id, dest_idx, e) => {
                 e.prevent_default();
-                let source_data = e.data_transfer().map(|dt| dt.get_data("text/plain").unwrap_or_default()).unwrap_or_default();
-                
+                let source_data = e
+                    .data_transfer()
+                    .map(|dt| dt.get_data("text/plain").unwrap_or_default())
+                    .unwrap_or_default();
+
                 let (src_col_id, src_idx) = if !source_data.is_empty() {
                     let parts: Vec<&str> = source_data.split(':').collect();
                     if parts.len() == 2 {
@@ -452,7 +504,10 @@ impl Component for App {
                 if let Some(ref mut data) = self.board_data {
                     if let Some(board) = data.boards.get_mut(&self.active_board_id) {
                         // Extract task from source column
-                        let task_opt = board.columns.get_mut(&src_col_id).map(|col| col.tasks.remove(src_idx));
+                        let task_opt = board
+                            .columns
+                            .get_mut(&src_col_id)
+                            .map(|col| col.tasks.remove(src_idx));
                         if let Some(task) = task_opt {
                             // Insert task into destination column
                             if let Some(dest_col) = board.columns.get_mut(&dest_col_id) {
@@ -583,7 +638,8 @@ impl App {
             if let Some(document) = window.document() {
                 if let Some(ref data) = self.board_data {
                     if let Some(board) = data.boards.get(&self.active_board_id) {
-                        let _ = document.set_title(&format!("{} - {}", board.name, self.site_title));
+                        let _ =
+                            document.set_title(&format!("{} - {}", board.name, self.site_title));
                         return;
                     }
                 }
@@ -614,7 +670,11 @@ impl App {
         if let Some(ref data) = self.board_data {
             let payload = data.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let _ = Request::post("/data/tasks.json").json(&payload).unwrap().send().await;
+                let _ = Request::post("/data/tasks.json")
+                    .json(&payload)
+                    .unwrap()
+                    .send()
+                    .await;
             });
         }
     }
@@ -651,7 +711,7 @@ impl App {
                 let val = input.value();
                 let filtered: String = val.chars().filter(|c| c.is_ascii_digit()).collect();
                 input.set_value(&filtered);
-                
+
                 link.send_message(Msg::PinInputChanged(filtered.clone()));
                 if filtered.len() == pin_length {
                     link.send_message(Msg::VerifyPin);
@@ -720,7 +780,7 @@ impl App {
                                                 let col_id_drop = col_id_tasks.clone();
                                                 let col_id_edit = col_id_tasks.clone();
                                                 let col_id_delete = col_id_tasks.clone();
-                                                
+
                                                 let on_delete_click = ctx.link().callback(move |e: MouseEvent| {
                                                     e.stop_propagation();
                                                     Msg::DeleteTaskDirect(col_id_delete.clone(), idx)
@@ -768,8 +828,6 @@ impl App {
         }
     }
 
-
-
     fn render_task_modal(&self, ctx: &Context<Self>) -> Html {
         let tr = get_translations(self.language);
         let on_input = {
@@ -811,8 +869,6 @@ impl App {
             </div>
         }
     }
-
-
 }
 
 fn main() {

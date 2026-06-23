@@ -1,20 +1,20 @@
 use axum::{
+    Json, Router,
     extract::State,
     http::StatusCode,
     middleware,
     response::{Html, IntoResponse, Response},
     routing::{get, post},
-    Json, Router,
 };
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::Path as StdPath;
 use std::sync::OnceLock;
-use tracing_subscriber::prelude::*;
 use std::time::{Duration, Instant};
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
+use tracing_subscriber::prelude::*;
 
 static START_TIME: OnceLock<Instant> = OnceLock::new();
 
@@ -34,12 +34,10 @@ impl AppConfig {
             .ok()
             .and_then(|p| p.parse().ok())
             .unwrap_or(4405);
-        let site_title = std::env::var("SITE_TITLE")
-            .unwrap_or_else(|_| "RustKan".to_string());
+        let site_title = std::env::var("SITE_TITLE").unwrap_or_else(|_| "RustKan".to_string());
         let apprise_url = std::env::var("APPRISE_URL").ok().filter(|s| !s.is_empty());
-        let apprise_message = std::env::var("APPRISE_MESSAGE").unwrap_or_else(|_| {
-            "Kanban Board updated: {action}".to_string()
-        });
+        let apprise_message = std::env::var("APPRISE_MESSAGE")
+            .unwrap_or_else(|_| "Kanban Board updated: {action}".to_string());
         let pin = std::env::var("RUSTKAN_PIN")
             .or_else(|_| std::env::var("PIN"))
             .ok()
@@ -73,8 +71,7 @@ async fn main() {
     START_TIME.set(Instant::now()).ok();
     tracing_subscriber::registry()
         .with(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "info".into()),
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
@@ -114,8 +111,14 @@ async fn main() {
         .route("/favicon.svg", get(static_files::serve_favicon))
         .route("/favicon.png", get(static_files::serve_favicon_png))
         .route("/manifest.json", get(static_files::serve_manifest))
-        .route("/asset-manifest.json", get(static_files::serve_asset_manifest))
-        .route("/service-worker.js", get(static_files::serve_service_worker))
+        .route(
+            "/asset-manifest.json",
+            get(static_files::serve_asset_manifest),
+        )
+        .route(
+            "/service-worker.js",
+            get(static_files::serve_service_worker),
+        )
         .route("/", get(serve_index))
         .route("/index.html", get(serve_index))
         .fallback_service(ServeDir::new("frontend/dist"))
@@ -148,7 +151,10 @@ fn initialize_storage() {
             },
             "activeBoard": "work"
         });
-        let _ = fs::write(tasks_path, serde_json::to_string_pretty(&default_structure).unwrap());
+        let _ = fs::write(
+            tasks_path,
+            serde_json::to_string_pretty(&default_structure).unwrap(),
+        );
     }
 }
 
@@ -194,7 +200,9 @@ async fn verify_pin(
         let mut headers = axum::http::header::HeaderMap::new();
         headers.insert(
             axum::http::header::SET_COOKIE,
-            axum::http::header::HeaderValue::from_static("RUSTKAN_PIN=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"),
+            axum::http::header::HeaderValue::from_static(
+                "RUSTKAN_PIN=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
+            ),
         );
         return (
             StatusCode::OK,
@@ -242,7 +250,9 @@ async fn logout() -> impl IntoResponse {
     let mut headers = axum::http::header::HeaderMap::new();
     headers.insert(
         axum::http::header::SET_COOKIE,
-        axum::http::header::HeaderValue::from_static("RUSTKAN_PIN=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"),
+        axum::http::header::HeaderValue::from_static(
+            "RUSTKAN_PIN=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
+        ),
     );
     (
         StatusCode::OK,
@@ -292,7 +302,12 @@ async fn save_tasks(
         }
     }
 
-    match tokio::fs::write("data/tasks.json", serde_json::to_string_pretty(&payload).unwrap()).await {
+    match tokio::fs::write(
+        "data/tasks.json",
+        serde_json::to_string_pretty(&payload).unwrap(),
+    )
+    .await
+    {
         Ok(_) => {
             // Trigger Apprise notification
             if state.config.apprise_url.is_some() {
@@ -317,7 +332,10 @@ fn is_authorized(headers: &axum::http::HeaderMap, pin: &str) -> bool {
                 .and_then(|s| s.split('=').nth(1))
                 .map(|s| s.trim().to_string())
         });
-    let header_pin = headers.get("x-pin").and_then(|h| h.to_str().ok()).map(|s| s.to_string());
+    let header_pin = headers
+        .get("x-pin")
+        .and_then(|h| h.to_str().ok())
+        .map(|s| s.to_string());
     let provided_pin = cookie_pin.or(header_pin);
 
     match provided_pin {
@@ -339,15 +357,14 @@ fn safe_compare(a: &str, b: &str) -> bool {
 
 fn determine_action(payload: &serde_json::Value) -> String {
     // Return a descriptive update state
-    let active_board = payload.get("activeBoard").and_then(|v| v.as_str()).unwrap_or("work");
+    let active_board = payload
+        .get("activeBoard")
+        .and_then(|v| v.as_str())
+        .unwrap_or("work");
     format!("Board '{}' state modified", active_board)
 }
 
-async fn trigger_apprise_notification(
-    action: &str,
-    config: &AppConfig,
-    client: &reqwest::Client,
-) {
+async fn trigger_apprise_notification(action: &str, config: &AppConfig, client: &reqwest::Client) {
     let url = match &config.apprise_url {
         Some(u) => u,
         None => return,

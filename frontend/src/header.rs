@@ -13,7 +13,7 @@ pub struct HeaderProps {
     pub on_logout: Callback<MouseEvent>,
     pub logout_tooltip: String,
     pub theme_toggle_tooltip: String,
-    
+
     // Print fields
     pub on_print: Callback<MouseEvent>,
     pub print_tooltip: String,
