@@ -49,3 +49,16 @@ docker run -d \
   -v $(pwd)/data:/usr/src/app/data \
   ubermetroid/rustkan:latest
 ```
+
+---
+
+## 📋 Configuration Options
+
+Configure these settings inside your Docker Compose environment or container environment variables:
+
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `PORT` | Local host port mapping for the backend. | `4405` |
+| `SITE_TITLE` | Custom title rendered in the navigation header. | `RustKan` |
+| `ALLOWED_ORIGINS` | Comma-separated HTTP request origins (CORS filter). | `*` |
+| `RUSTKAN_PIN` | Optional 4-10 digit PIN to lock access to the boards. | None |
