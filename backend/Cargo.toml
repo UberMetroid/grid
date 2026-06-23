@@ -2,6 +2,12 @@
 name = "backend"
 version = "1.0.1"
 edition = "2024"
+authors = ["UberMetroid <admin@ubermetroid.com>"]
+license = "GPL-3.0-only"
+repository = "https://github.com/UberMetroid/RustKan"
+homepage = "https://github.com/UberMetroid/RustKan"
+description = "Axum backend service for RustKan."
+readme = "../README.md"
 
 [dependencies]
 tokio = { version = "1.36", features = ["macros", "rt-multi-thread", "net", "time", "io-util"] }

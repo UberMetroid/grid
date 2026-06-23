@@ -12,12 +12,12 @@
   <Support>https://github.com/UberMetroid/RustKan/issues</Support>
   <Project>https://github.com/UberMetroid/RustKan</Project>
   <Overview>
-    RustKan is a clean, secure, and lightning-fast Kanban board application built in Rust with Yew and Axum.
-
-    Key Features:
-    - High performance and tiny resource footprint.
-    - Dynamic color themes (Light, Dark, Nord, Dracula, Sepia).
-    - Multilingual interface support.
+    RustKan is a clean, secure, and lightning-fast Kanban board application built in Rust with Yew and Axum.&#xD;
+    &#xD;
+    Key Features:&#xD;
+    - High performance and tiny resource footprint.&#xD;
+    - Dynamic color themes (Light, Dark, Nord, Dracula, Sepia).&#xD;
+    - Multilingual interface support.&#xD;
     - Optional access PIN encryption for privacy.
   </Overview>
   <Category>Productivity:Tools;Tools:Utilities;Network:Web;</Category>
