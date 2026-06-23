@@ -26,6 +26,7 @@ RUN cargo build --release --bin backend
 
 # Stage 3: Final package
 FROM alpine:3.18
+LABEL org.opencontainers.image.source="https://github.com/UberMetroid/RustKan"
 WORKDIR /app
 
 # Install runtime dependencies
