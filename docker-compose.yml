@@ -6,9 +6,12 @@ services:
     restart: unless-stopped
     ports:
       - ${PORT:-4405}:4405
-    environment:
-      - SITE_TITLE=${SITE_TITLE:-RustKan}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
-      - RUSTKAN_PIN=${RUSTKAN_PIN}
     volumes:
       - ./data:/app/data
+    environment:
+      PORT: 4405
+      SITE_TITLE: ${SITE_TITLE:-RustKan}
+      RUSTKAN_PIN: ${RUSTKAN_PIN:-}
+      BASE_URL: ${BASE_URL:-http://localhost:4405}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-*}
+      TZ: ${TZ:-UTC}
