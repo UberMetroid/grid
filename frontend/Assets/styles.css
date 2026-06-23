@@ -315,7 +315,7 @@ header h1 {
 }
 
 .language-select option {
-    background-color: var(--background);
+    background-color: var(--bg-color);
     color: var(--text);
 }
 
