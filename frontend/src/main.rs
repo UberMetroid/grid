@@ -85,7 +85,18 @@ impl Component for App {
 
     fn create(ctx: &Context<Self>) -> Self {
         // Load initial theme & language
-        let theme = StorageService::get_item("theme", "dark");
+        let raw_theme = StorageService::get_item("theme", "crateria");
+        let theme = match raw_theme.as_str() {
+            "light" => "brinstar".to_string(),
+            "dark" => "crateria".to_string(),
+            "nord" => "maridia".to_string(),
+            "dracula" => "wrecked_ship".to_string(),
+            "sepia" => "norfair".to_string(),
+            t => t.to_string(),
+        };
+        if theme != raw_theme {
+            StorageService::set_item("theme", &theme);
+        }
         let language = Language::from_code(&StorageService::get_item("language", "en"));
 
         // Initialize document classes
@@ -346,11 +357,12 @@ impl Component for App {
             }
             Msg::ToggleTheme => {
                 let next_theme = match self.theme.as_str() {
-                    "light" => "dark",
-                    "dark" => "nord",
-                    "nord" => "dracula",
-                    "dracula" => "sepia",
-                    _ => "light",
+                    "crateria" => "brinstar",
+                    "brinstar" => "norfair",
+                    "norfair" => "wrecked_ship",
+                    "wrecked_ship" => "maridia",
+                    "maridia" => "tourian",
+                    _ => "crateria",
                 };
                 self.theme = next_theme.to_string();
                 StorageService::set_item("theme", next_theme);

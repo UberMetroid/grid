@@ -216,7 +216,7 @@ async fn verify_pin(
             axum::http::header::SET_COOKIE,
             axum::http::header::HeaderValue::from_str(&format!(
                 "RUSTKAN_PIN={}; Path=/; HttpOnly; SameSite=Lax",
-                pin_str
+                hash_pin(pin_str)
             ))
             .unwrap(),
         );
@@ -318,11 +318,11 @@ fn is_authorized(headers: &axum::http::HeaderMap, pin: &str) -> bool {
         .get("x-pin")
         .and_then(|h| h.to_str().ok())
         .map(|s| s.to_string());
-    let provided_pin = cookie_pin.or(header_pin);
 
-    match provided_pin {
-        Some(prov) => safe_compare(&prov, pin),
-        None => false,
+    match (cookie_pin, header_pin) {
+        (Some(cookie), _) => safe_compare(&cookie, &hash_pin(pin)),
+        (None, Some(hdr)) => safe_compare(&hdr, pin),
+        (None, None) => false,
     }
 }
 
@@ -335,6 +335,14 @@ fn safe_compare(a: &str, b: &str) -> bool {
         result |= x ^ y;
     }
     result == 0
+}
+
+fn hash_pin(pin: &str) -> String {
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(pin.as_bytes());
+    let result = hasher.finalize();
+    format!("{:x}", result)
 }
 
 fn get_cors_layer() -> CorsLayer {
