@@ -16,6 +16,11 @@ impl App {
 
         self.pin_required = pin_req;
         self.pin_length = pin_len;
+        self.enable_translation = json
+            .get("enable_translation")
+            .or_else(|| json.get("enableTranslation"))
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false);
 
         if pin_req {
             let link = ctx.link().clone();

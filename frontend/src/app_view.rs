@@ -51,6 +51,7 @@ impl App {
                     on_print={ctx.link().callback(|_| Msg::PrintBoard)}
                     print_tooltip={tr.print_tooltip.to_string()}
                     disable_print={disable_print}
+                    enable_translation={self.enable_translation}
                 />
 
                 /* Main Body Wrapper */

@@ -11,6 +11,7 @@ pub struct App {
     pub pin_input: String,
     pub error_message: Option<String>,
     pub board_data: Option<BoardData>,
+    pub enable_translation: bool,
 
     // UI states
     pub active_board_id: String,
