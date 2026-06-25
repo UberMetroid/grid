@@ -32,13 +32,18 @@ services:
     restart: unless-stopped
     ports:
       - 4405:4405
+    volumes:
+      - ./data:/app/data
     environment:
       - PORT=4405
       - SITE_TITLE=Grid
+      - BASE_URL=http://localhost:4405
       - ALLOWED_ORIGINS=*
-      - GRID_PIN=1234  # Optional: Set a PIN to lock board access
-    volumes:
-      - ./data:/app/data
+      - GRID_PIN=1234
+      - TZ=UTC
+      - ENABLE_TRANSLATION=false
+      - ENABLE_THEMES=true
+      - ENABLE_PRINT=true
 ```
 
 2. Run the container:
