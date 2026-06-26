@@ -26,26 +26,4 @@ indexmap = { version = "2.2", features = ["serde"] }
 sha2 = "0.11"
 ipnet = "2.9"
 
-[package.metadata.deb]
-name = "grid"
-changelog = "debian/changelog"
-copyright = "2026 UberMetroid <admin@ubermetroid.com>"
-maintainer = "UberMetroid <admin@ubermetroid.com>"
-extended-description = """\
-Grid is a high-performance, self-hosted Kanban board application built in Rust. \
-It provides drag-and-drop task tracking across custom workflow columns with \
-optional PIN access protection."""
-depends = "$auto, libc6, ca-certificates"
-section = "utils"
-priority = "optional"
-maintainer-scripts = "debian"
-assets = [
-    ["target/release/backend", "usr/bin/grid", "755"],
-    ["../README.md", "usr/share/doc/grid/README.md", "644"],
-]
-systemd-units = {}
-
-[package.metadata.generate-rpm]
-name = "grid"
-
 
