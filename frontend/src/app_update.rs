@@ -62,7 +62,7 @@ impl App {
             next_toast_id: 0,
             enable_translation: false,
             enable_themes: true,
-            enable_print: true,
+            enable_print: false,
         };
         app.update_document_title();
         app
