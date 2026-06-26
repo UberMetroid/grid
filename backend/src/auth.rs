@@ -307,6 +307,8 @@ pub async fn pin_required(
         "enable_translation": state.config.enable_translation,
         "enable_themes": state.config.enable_themes,
         "enable_print": state.config.enable_print,
+        "show_version": state.config.show_version,
+        "show_github": state.config.show_github,
     }))
 }
 

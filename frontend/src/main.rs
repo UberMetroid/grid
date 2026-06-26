@@ -3,6 +3,7 @@ mod app_update;
 mod app_update_handlers;
 mod app_view;
 mod header;
+mod footer;
 mod i18n;
 mod storage;
 mod types;

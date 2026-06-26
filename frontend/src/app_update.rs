@@ -63,6 +63,8 @@ impl App {
             enable_translation: false,
             enable_themes: true,
             enable_print: false,
+            show_version: true,
+            show_github: true,
         };
         app.update_document_title();
         app

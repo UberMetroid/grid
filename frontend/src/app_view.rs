@@ -8,6 +8,9 @@ use yew::prelude::*;
 impl App {
     pub fn view_app(&self, ctx: &Context<Self>) -> Html {
         let tr = get_translations(self.language);
+        let show_version = self.show_version;
+        let show_github = self.show_github;
+        let version = env!("CARGO_PKG_VERSION").to_string();
 
         let disable_print = if let Some(ref data) = self.board_data {
             if let Some(board) = data.boards.get(&self.active_board_id) {
@@ -62,7 +65,7 @@ impl App {
                 </div>
 
                 /* Footer */
-                <footer class="layout-footer">
+                <crate::footer::Footer {show_version} {version} {show_github}>
                     {
                         if let Some(t) = self.toasts.last() {
                             let cls = if t.is_error { "error" } else { "success" };
@@ -79,7 +82,7 @@ impl App {
                             }
                         }
                     }
-                </footer>
+                </crate::footer::Footer>
 
                 /* Task Modal Dialog */
                 if self.show_task_modal {

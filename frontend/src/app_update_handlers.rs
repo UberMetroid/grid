@@ -35,6 +35,16 @@ impl App {
             .or_else(|| json.get("enablePrint"))
             .and_then(|v| v.as_bool())
             .unwrap_or(true);
+        self.show_version = json
+            .get("show_version")
+            .or_else(|| json.get("showVersion"))
+            .and_then(|v| v.as_bool())
+            .unwrap_or(true);
+        self.show_github = json
+            .get("show_github")
+            .or_else(|| json.get("showGithub"))
+            .and_then(|v| v.as_bool())
+            .unwrap_or(true);
 
         if !self.enable_themes {
             self.theme = "tourian".to_string();
