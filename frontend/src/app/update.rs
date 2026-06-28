@@ -3,8 +3,8 @@ use crate::i18n::get_translations;
 use crate::storage::StorageService;
 use crate::types::*;
 use gloo_net::http::Request;
-use yew::prelude::*;
 use shared_assets::theme::{Theme, mapping::Scheme};
+use yew::prelude::*;
 
 impl App {
     pub fn create_app(ctx: &Context<Self>) -> Self {

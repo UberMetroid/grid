@@ -2,8 +2,8 @@ use crate::app::App;
 use crate::storage::StorageService;
 use crate::types::*;
 use gloo_net::http::Request;
-use yew::prelude::*;
 use shared_assets::theme::Theme;
+use yew::prelude::*;
 
 impl App {
     pub fn handle_fetch_config_success(

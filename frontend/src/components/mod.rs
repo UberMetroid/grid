@@ -1,5 +1,5 @@
-pub mod pin;
 pub mod board;
-pub mod task_modal;
-pub mod header;
 pub mod footer;
+pub mod header;
+pub mod pin;
+pub mod task_modal;

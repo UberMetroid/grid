@@ -8,14 +8,14 @@ use std::time::Duration;
 use tower_http::services::ServeDir;
 use tracing_subscriber::{Layer, layer::SubscriberExt, util::SubscriberInitExt};
 
-mod routes;
 mod config;
+mod routes;
 mod state;
 mod static_files;
 
 use config::AppConfig;
-use state::AppState;
 use routes::{auth, tasks};
+use state::AppState;
 
 #[tokio::main]
 async fn main() {
@@ -100,31 +100,32 @@ async fn main() {
     let server_config: Arc<shared_assets::server::ServerConfig> = Arc::new(config.server.clone());
     let cors = shared_assets::middleware::cors_layer(&server_config);
 
-    let api_routes = Router::new()
-        .route(
-            "/tasks",
-            get(tasks::get_tasks).post(tasks::save_tasks).layer(
-                middleware::from_fn_with_state(state.clone(), auth::require_pin),
-            ),
-        )
-        .route("/verify-pin", post(auth::verify_pin))
-        .route("/logout", post(auth::logout))
-        .route(
-            "/auth-check",
-            get(auth::auth_check).layer(middleware::from_fn_with_state(
+    let api_routes =
+        Router::new()
+            .route(
+                "/tasks",
+                get(tasks::get_tasks).post(tasks::save_tasks).layer(
+                    middleware::from_fn_with_state(state.clone(), auth::require_pin),
+                ),
+            )
+            .route("/verify-pin", post(auth::verify_pin))
+            .route("/logout", post(auth::logout))
+            .route(
+                "/auth-check",
+                get(auth::auth_check).layer(middleware::from_fn_with_state(
+                    state.clone(),
+                    auth::require_pin,
+                )),
+            )
+            .route("/pin-required", get(auth::pin_required))
+            .layer(middleware::from_fn_with_state(
                 state.clone(),
-                auth::require_pin,
-            )),
-        )
-        .route("/pin-required", get(auth::pin_required))
-        .layer(middleware::from_fn_with_state(
-            state.clone(),
-            auth::rate_limit_middleware,
-        ))
-        .layer(middleware::from_fn_with_state(
-            state.clone(),
-            auth::origin_validation_middleware,
-        ));
+                auth::rate_limit_middleware,
+            ))
+            .layer(middleware::from_fn_with_state(
+                state.clone(),
+                auth::origin_validation_middleware,
+            ));
 
     let app = Router::new()
         .nest("/api", api_routes)

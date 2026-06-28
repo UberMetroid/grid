@@ -8,7 +8,6 @@ use axum::{
     http::{HeaderMap, StatusCode, header},
     middleware::Next,
     response::{IntoResponse, Response},
-
 };
 use shared_assets::server::get_client_ip;
 use std::net::SocketAddr;

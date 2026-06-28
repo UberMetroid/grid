@@ -1,6 +1,6 @@
 use crate::app::App;
-use crate::components::header::Header;
 use crate::components::footer::Footer;
+use crate::components::header::Header;
 use crate::i18n::get_translations;
 use crate::types::*;
 use yew::prelude::*;

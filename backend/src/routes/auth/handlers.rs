@@ -1,3 +1,4 @@
+use super::{COOKIE_NAME, is_authenticated};
 use crate::state::AppState;
 use axum::{
     Json,
@@ -9,7 +10,6 @@ use shared_assets::auth::{is_locked_out, record_attempt, reset_attempts};
 use shared_assets::server::get_client_ip;
 use std::net::SocketAddr;
 use std::time::Duration;
-use super::{COOKIE_NAME, is_authenticated};
 
 pub fn generate_session_id() -> String {
     use std::fs::File;
