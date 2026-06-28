@@ -4,13 +4,13 @@ use axum::{
     http::{HeaderMap, StatusCode},
     response::IntoResponse,
 };
-use shared_assets::auth::is_locked_out;
-use shared_assets::server::get_client_ip;
+use shared_backend::auth::is_locked_out;
+use shared_backend::server::get_client_ip;
 use std::net::SocketAddr;
 use std::time::Duration;
 
-use crate::state::AppState;
 use super::is_authenticated;
+use crate::state::AppState;
 
 pub async fn auth_check(headers: HeaderMap, State(state): State<AppState>) -> impl IntoResponse {
     if !is_authenticated(&headers, &state).await {

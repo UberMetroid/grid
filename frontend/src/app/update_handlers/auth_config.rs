@@ -2,7 +2,7 @@ use crate::app::App;
 use crate::storage::StorageService;
 use crate::types::*;
 use gloo_net::http::Request;
-use shared_assets::theme::Theme;
+use shared_frontend::theme::Theme;
 use yew::prelude::*;
 
 impl App {

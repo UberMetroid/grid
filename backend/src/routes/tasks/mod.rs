@@ -12,7 +12,7 @@ use std::sync::LazyLock;
 use std::time::Instant;
 
 pub mod types;
-use types::{Column, Board, BoardData};
+use types::{Board, BoardData, Column};
 
 static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 

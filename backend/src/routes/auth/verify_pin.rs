@@ -4,13 +4,13 @@ use axum::{
     http::{HeaderMap, StatusCode, header},
     response::IntoResponse,
 };
-use shared_assets::auth::{is_locked_out, record_attempt, reset_attempts};
-use shared_assets::server::get_client_ip;
+use shared_backend::auth::{is_locked_out, record_attempt, reset_attempts};
+use shared_backend::server::get_client_ip;
 use std::net::SocketAddr;
 use std::time::Duration;
 
-use crate::state::AppState;
 use super::COOKIE_NAME;
+use crate::state::AppState;
 
 #[derive(serde::Deserialize)]
 pub struct VerifyPinPayload {
@@ -56,7 +56,7 @@ pub async fn verify_pin(
     let ip_str = ip.to_string();
     let lockout_dur = Duration::from_secs(state.config.server.lockout_time_minutes * 60);
     if is_locked_out(&ip_str, state.config.server.max_attempts, lockout_dur) {
-        let secs_remaining = shared_assets::auth::lockout_remaining_secs(&ip_str, lockout_dur);
+        let secs_remaining = shared_backend::auth::lockout_remaining_secs(&ip_str, lockout_dur);
         let minutes_remaining = (secs_remaining / 60).max(1);
         return (
             StatusCode::TOO_MANY_REQUESTS,

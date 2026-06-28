@@ -1,11 +1,11 @@
+use super::COOKIE_NAME;
+use crate::state::AppState;
 use axum::{
     Json,
     extract::State,
     http::{HeaderMap, StatusCode, header},
     response::IntoResponse,
 };
-use crate::state::AppState;
-use super::COOKIE_NAME;
 
 pub async fn logout(headers: HeaderMap, State(state): State<AppState>) -> impl IntoResponse {
     let cookie_val = headers

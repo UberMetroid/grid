@@ -85,7 +85,7 @@ async fn main() {
     // Rate-limit cleanup thread.
     //
     // Note: login-attempt lockouts are now tracked in
-    // `shared_assets::auth::attempts` (process-global). Entries self-expire
+    // `shared_backend::auth::attempts` (process-global). Entries self-expire
     // on read in `is_locked_out`, so no cleanup thread is required for them.
     let state_clone = state.clone();
     tokio::spawn(async move {
@@ -98,35 +98,34 @@ async fn main() {
     // Use the canonical CORS layer from shared-assets. The previous inline
     // version only allowed GET and POST; the shared version correctly
     // allows all common REST methods.
-    let server_config: Arc<shared_assets::server::ServerConfig> = Arc::new(config.server.clone());
-    let cors = shared_assets::middleware::cors_layer(&server_config);
+    let server_config: Arc<shared_backend::server::ServerConfig> = Arc::new(config.server.clone());
+    let cors = shared_backend::middleware::cors_layer(&server_config);
 
-    let api_routes =
-        Router::new()
-            .route(
-                "/tasks",
-                get(tasks::get_tasks).post(tasks::save_tasks).layer(
-                    axum_middleware::from_fn_with_state(state.clone(), auth::require_pin),
-                ),
-            )
-            .route("/verify-pin", post(auth::verify_pin))
-            .route("/logout", post(auth::logout))
-            .route(
-                "/auth-check",
-                get(auth::auth_check).layer(axum_middleware::from_fn_with_state(
-                    state.clone(),
-                    auth::require_pin,
-                )),
-            )
-            .route("/pin-required", get(auth::pin_required))
-            .layer(axum_middleware::from_fn_with_state(
+    let api_routes = Router::new()
+        .route(
+            "/tasks",
+            get(tasks::get_tasks).post(tasks::save_tasks).layer(
+                axum_middleware::from_fn_with_state(state.clone(), auth::require_pin),
+            ),
+        )
+        .route("/verify-pin", post(auth::verify_pin))
+        .route("/logout", post(auth::logout))
+        .route(
+            "/auth-check",
+            get(auth::auth_check).layer(axum_middleware::from_fn_with_state(
                 state.clone(),
-                auth::rate_limit_middleware,
-            ))
-            .layer(axum_middleware::from_fn_with_state(
-                state.clone(),
-                auth::origin_validation_middleware,
-            ));
+                auth::require_pin,
+            )),
+        )
+        .route("/pin-required", get(auth::pin_required))
+        .layer(axum_middleware::from_fn_with_state(
+            state.clone(),
+            auth::rate_limit_middleware,
+        ))
+        .layer(axum_middleware::from_fn_with_state(
+            state.clone(),
+            auth::origin_validation_middleware,
+        ));
 
     let app = Router::new()
         .nest("/api", api_routes)
@@ -146,11 +145,11 @@ async fn main() {
         .route("/index.html", get(tasks::serve_index))
         .fallback_service(ServeDir::new("frontend/dist"))
         .layer(axum_middleware::from_fn(
-            shared_assets::middleware::security_headers_layer,
+            shared_backend::middleware::security_headers_layer,
         ))
         .layer(axum_middleware::from_fn_with_state(
-            shared_assets::middleware::HstsState(server_config.clone()),
-            shared_assets::middleware::hsts_layer,
+            shared_backend::middleware::HstsState(server_config.clone()),
+            shared_backend::middleware::hsts_layer,
         ))
         .layer(tower_http::trace::TraceLayer::new_for_http())
         .layer(cors)

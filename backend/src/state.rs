@@ -7,7 +7,7 @@ use tokio::sync::RwLock;
 /// Application state.
 ///
 /// Login-attempt tracking is no longer here — it lives in
-/// `shared_assets::auth::attempts` as a process-global `OnceLock<Mutex<…>>`.
+/// `shared_backend::auth::attempts` as a process-global `OnceLock<Mutex<…>>`.
 /// Keeping it global (rather than per-instance state) ensures that
 /// concurrent requests on the same instance see consistent counters.
 #[derive(Clone)]
@@ -31,7 +31,7 @@ impl AppState {
     /// Sliding-window per-IP rate limiter, keyed by string IP.
     ///
     /// `ip` is expected to be the output of
-    /// `shared_assets::server::get_client_ip`, which is already normalized
+    /// `shared_backend::server::get_client_ip`, which is already normalized
     /// (IPv6 mapped to IPv4 where applicable) and trusts `X-Forwarded-For`
     /// only when the connecting socket matches `TRUSTED_PROXY_IPS`.
     pub async fn check_rate_limit(&self, ip: &str) -> bool {

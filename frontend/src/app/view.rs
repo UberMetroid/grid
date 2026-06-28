@@ -54,13 +54,12 @@ impl App {
                     pin_required={self.pin_required}
                     on_logout={ctx.link().callback(|_| Msg::Logout)}
                     logout_tooltip={tr.logout_tooltip.to_string()}
-                    on_print={ctx.link().callback(|_| Msg::PrintBoard)}
+                    on_print={if self.enable_print { Some(ctx.link().callback(|_| Msg::PrintBoard)) } else { None }}
                     print_tooltip={tr.print_tooltip.to_string()}
-                    disable_print={disable_print}
+                    print_disabled={disable_print || !self.enable_print}
                     theme_toggle_tooltip={tr.theme_toggle_tooltip.to_string()}
                     enable_translation={self.enable_translation}
                     enable_themes={self.enable_themes}
-                    enable_print={self.enable_print}
                 />
 
                 /* Main Body Wrapper */
