@@ -8,14 +8,14 @@ use std::time::Duration;
 use tower_http::services::ServeDir;
 use tracing_subscriber::{Layer, layer::SubscriberExt, util::SubscriberInitExt};
 
-mod auth;
+mod routes;
 mod config;
-mod handlers;
 mod state;
 mod static_files;
 
 use config::AppConfig;
 use state::AppState;
+use routes::{auth, tasks};
 
 #[tokio::main]
 async fn main() {
@@ -76,7 +76,7 @@ async fn main() {
     let config = AppConfig::load();
 
     // Create data storage and tasks.json
-    handlers::initialize_storage();
+    tasks::initialize_storage();
 
     let asset_manifest = std::sync::Arc::new(static_files::build_asset_manifest());
     let state = AppState::new(config.clone(), asset_manifest);
@@ -103,7 +103,7 @@ async fn main() {
     let api_routes = Router::new()
         .route(
             "/tasks",
-            get(handlers::get_tasks).post(handlers::save_tasks).layer(
+            get(tasks::get_tasks).post(tasks::save_tasks).layer(
                 middleware::from_fn_with_state(state.clone(), auth::require_pin),
             ),
         )
@@ -128,7 +128,7 @@ async fn main() {
 
     let app = Router::new()
         .nest("/api", api_routes)
-        .route("/health", get(handlers::serve_health))
+        .route("/health", get(tasks::serve_health))
         .route("/favicon.svg", get(static_files::serve_favicon))
         .route("/favicon.png", get(static_files::serve_favicon_png))
         .route("/manifest.json", get(static_files::serve_manifest))
@@ -140,8 +140,8 @@ async fn main() {
             "/service-worker.js",
             get(static_files::serve_service_worker),
         )
-        .route("/", get(handlers::serve_index))
-        .route("/index.html", get(handlers::serve_index))
+        .route("/", get(tasks::serve_index))
+        .route("/index.html", get(tasks::serve_index))
         .fallback_service(ServeDir::new("frontend/dist"))
         .layer(middleware::from_fn(
             shared_assets::middleware::security_headers_layer,
