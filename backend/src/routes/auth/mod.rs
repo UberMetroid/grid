@@ -1,6 +1,10 @@
-pub mod handlers;
+pub mod verify_pin;
+pub mod logout;
+pub mod pin_required;
 
-pub use handlers::{auth_check, logout, pin_required, verify_pin};
+pub use verify_pin::verify_pin;
+pub use logout::logout;
+pub use pin_required::{pin_required, auth_check};
 
 use crate::state::AppState;
 use axum::{
@@ -13,11 +17,6 @@ use shared_assets::server::get_client_ip;
 use std::net::SocketAddr;
 
 pub const COOKIE_NAME: &str = "GRID_PIN";
-
-#[derive(serde::Deserialize)]
-pub struct VerifyPinPayload {
-    pub pin: Option<String>,
-}
 
 pub async fn is_authenticated(headers: &HeaderMap, state: &AppState) -> bool {
     let pin = match &state.config.server.pin {
