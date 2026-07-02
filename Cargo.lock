@@ -108,7 +108,7 @@ version = "3.0.17"
 dependencies = [
  "axum",
  "chrono",
- "constant_time_eq",
+ "constant_time_eq 0.5.0",
  "dotenvy",
  "indexmap",
  "ipnet",
@@ -224,6 +224,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c74b8349d32d297c9134b8c88677813a227df8f779daa29bfc29c183fe3dca6"
 
 [[package]]
+name = "constant_time_eq"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a1ec0cfec728a79a5109075543131387f911cb4d07716436d7ae20533657a96"
+
+[[package]]
 name = "core-foundation-sys"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -288,7 +294,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1113,7 +1119,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1612,7 +1618,7 @@ source = "git+https://github.com/UberMetroid/shared-assets?tag=v3.0.13#77df9865d
 dependencies = [
  "anyhow",
  "axum",
- "constant_time_eq",
+ "constant_time_eq 0.3.1",
  "dotenvy",
  "http-body-util",
  "ipnet",
@@ -1630,7 +1636,7 @@ name = "shared-core"
 version = "3.0.13"
 source = "git+https://github.com/UberMetroid/shared-assets?tag=v3.0.13#77df9865dc00e2aad6ee51fdde687e29028386c9"
 dependencies = [
- "constant_time_eq",
+ "constant_time_eq 0.3.1",
  "serde",
 ]
 
@@ -1682,7 +1688,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "52d1cfed4120b4d927bf7c0f86d2087a4a7d6027c906d9f9d525a80573b9be51"
 dependencies = [
  "libc",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
