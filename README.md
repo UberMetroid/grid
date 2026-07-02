@@ -42,8 +42,15 @@ Configure these settings inside your Docker Compose environment or container env
 | `TZ` | Timezone for the container processes and logs. | `UTC` |
 | `ENABLE_TRANSLATION` | Enable the multi-language / translation selector in the navigation header (true/false). | `false` |
 | `ENABLE_THEMES` | Enable the Super Metroid theme selector in the navigation header (true/false). | `true` |
-| `ENABLE_PRINT` | Enable the print button in the navigation header (true/false). | `false` |
+| `ENABLE_PRINT` | Enable the print button in the navigation header (true/false). | `true` |
 | `MAX_ATTEMPTS` | Number of failed PIN attempts permitted before locking out the user client IP address. | `5` |
+| `LOCKOUT_TIME_MINUTES` | Lockout duration in minutes for IPs exceeding `MAX_ATTEMPTS`. | `15` |
+| `COOKIE_MAX_AGE_HOURS` | Duration in hours that the user's PIN session cookie remains valid. | `24` |
+| `SHUTDOWN_DRAIN_SECONDS` | Seconds to wait for active connections to finish before shutting down. | `5` |
+| `SHOW_VERSION` | Display the application version number in the footer (true/false). | `true` |
+| `SHOW_GITHUB` | Display the GitHub repository link in the footer (true/false). | `true` |
+| `TRUST_PROXY` | Set `true` if backend is hosted behind a reverse proxy. | `false` |
+| `TRUSTED_PROXY_IPS` | Comma-separated IP/CIDR list of trusted upstream proxies. | None |
 
 
 
