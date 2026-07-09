@@ -60,8 +60,9 @@ pub async fn origin_validation_middleware(
     req: axum::extract::Request,
     next: Next,
 ) -> Result<Response, StatusCode> {
-    let origins_env = &state.config.server.allowed_origins;
-    if origins_env == "*" {
+    let origins_env = state.config.server.allowed_origins.trim();
+    // Empty = no allowlist configured (Unraid often omits ALLOWED_ORIGINS).
+    if origins_env.is_empty() || origins_env == "*" {
         return Ok(next.run(req).await);
     }
 
