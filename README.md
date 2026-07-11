@@ -42,12 +42,12 @@ Images are **UBI9-minimal** based (Red Hat Universal Base Image). Tags:
 
 ```bash
 # Pull examples
-podman pull docker.io/etecoons/grid:latest
-podman pull docker.io/etecoons/grid:ubi
-podman pull docker.io/etecoons/grid:3.0.21
+podman pull docker.io/ghcr.io/etecoons/grid:latest
+podman pull docker.io/ghcr.io/etecoons/grid:ubi
+podman pull docker.io/ghcr.io/etecoons/grid:3.0.21
 ```
 
-Hub: [https://hub.docker.com/r/etecoons/grid](https://hub.docker.com/r/etecoons/grid)
+Hub: [https://hub.docker.com/r/ghcr.io/etecoons/grid](https://hub.docker.com/r/ghcr.io/etecoons/grid)
 
 ### Docker Compose
 Create a `docker-compose.yml` file with the following service definition:
@@ -55,7 +55,7 @@ Create a `docker-compose.yml` file with the following service definition:
 ```yaml
 services:
  grid:
- image: etecoons/grid:latest
+ image: ghcr.io/etecoons/grid:latest
  container_name: grid
  restart: unless-stopped
  ports:
@@ -82,15 +82,15 @@ Requires [Podman](https://podman.io/) (or Docker) and network access to pull bas
 ```bash
 # From the repository root
 podman build --format docker -f Containerfile.ubi \
- -t docker.io/etecoons/grid:3.0.21 \
- -t docker.io/etecoons/grid:latest \
- -t docker.io/etecoons/grid:ubi \
+ -t docker.io/ghcr.io/etecoons/grid:3.0.21 \
+ -t docker.io/ghcr.io/etecoons/grid:latest \
+ -t docker.io/ghcr.io/etecoons/grid:ubi \
  .
 
 # Optional: push all three tags
-podman push docker.io/etecoons/grid:3.0.21
-podman push docker.io/etecoons/grid:latest
-podman push docker.io/etecoons/grid:ubi
+podman push docker.io/ghcr.io/etecoons/grid:3.0.21
+podman push docker.io/ghcr.io/etecoons/grid:latest
+podman push docker.io/ghcr.io/etecoons/grid:ubi
 ```
 
 ---

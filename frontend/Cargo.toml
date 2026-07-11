@@ -1,6 +1,6 @@
 [package]
 name = "frontend"
-version = "3.0.26"
+version = "3.0.27"
 edition = "2024"
 authors = ["etecoons"]
 license = "Apache-2.0"
@@ -21,11 +21,11 @@ gloo-utils = "0.3"
 gloo-timers = { version = "0.4", features = ["futures"] }
 chrono = { version = "0.4", default-features = false, features = ["std", "serde", "clock"] }
 indexmap = { version = "2.2", features = ["serde"] }
-shared-frontend = { git = "https://github.com/etecoons/shared-assets.git", tag = "v3.0.21" }
-shared-core = { git = "https://github.com/etecoons/shared-assets.git", tag = "v3.0.21" }
+shared-frontend = { git = "https://github.com/etecoons/shared-assets.git", tag = "v3.0.28" }
+shared-core = { git = "https://github.com/etecoons/shared-assets.git", tag = "v3.0.28" }
 
 [dependencies.web-sys]
-version = "=0.3.98"
+version = "3.0.27"
 features = [
   "Element",
   "HtmlElement",
