@@ -6,7 +6,7 @@
 
 # Grid
 
-[![CI](https://github.com/etecoons/grid/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/etecoons/grid/actions/workflows/build-and-deploy.yml)
+[![CI](https://github.com/etecoons/grid/actions/workflows/ci.yml/badge.svg)](https://github.com/etecoons/grid/actions/workflows/ci.yml)
 
 Clean, secure, and lightning-fast self-hosted Kanban board in Rust.
 
