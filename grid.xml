@@ -10,7 +10,7 @@
   <Support>https://github.com/studio2201/grid/issues</Support>
   <Project>https://github.com/studio2201/grid</Project>
   <Overview>Distributed cluster management, node health, and file grid dashboard built in Rust.</Overview>
-  <Category>Tools: System Network:Management</Category>
+  <Category>Productivity:Other Network:Web</Category>
   <WebUI>http://[IP]:[PORT:4405]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/studio2201/unraid-templates/main/templates/grid.xml</TemplateURL>
   <Icon>https://raw.githubusercontent.com/studio2201/unraid-templates/main/icons/grid.png</Icon>
