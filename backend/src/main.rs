@@ -1,3 +1,5 @@
+mod cookie_auth;
+mod session_id;
 use axum::{
     Router, middleware as axum_middleware,
     routing::{get, post},
